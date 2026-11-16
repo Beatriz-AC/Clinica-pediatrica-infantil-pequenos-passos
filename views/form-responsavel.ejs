@@ -1,0 +1,28 @@
+<%- include('partials/topo', { titulo: titulo }) %>
+<h1><%= titulo %></h1>
+<div class="card">
+  <% if (erro) { %><div class="erro"><%= erro %></div><% } %>
+  <form method="POST" action="<%= action %>">
+    <label for="nome">Nome completo</label>
+    <input type="text" id="nome" name="nome" value="<%= responsavel.nome || '' %>" required>
+
+    <label for="cpf">CPF</label>
+    <input type="password" id="cpf" name="cpf" maxlength="14" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00"
+           <%= editando ? '' : 'required' %>>
+    <% if (editando) { %>
+      <span class="nota">O CPF está criptografado. Deixe em branco para mantê-lo ou informe um novo CPF para substituí-lo.</span>
+    <% } %>
+
+    <label for="telefone">Telefone</label>
+    <input type="text" id="telefone" name="telefone" value="<%= responsavel.telefone || '' %>">
+
+    <label for="email">E-mail</label>
+    <input type="email" id="email" name="email" value="<%= responsavel.email || '' %>">
+
+    <p>
+      <button type="submit">Salvar</button>
+      <a class="btn btn-sec" href="/responsaveis">Cancelar</a>
+    </p>
+  </form>
+</div>
+<%- include('partials/rodape') %>

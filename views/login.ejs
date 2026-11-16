@@ -1,0 +1,14 @@
+<%- include('partials/topo', { titulo: 'Login' }) %>
+<div class="card" style="max-width: 400px; margin: 60px auto;">
+  <h1>Pequenos Passos</h1>
+  <p>Acesso restrito a recepcionistas e atendentes.</p>
+  <% if (erro) { %><div class="erro"><%= erro %></div><% } %>
+  <form method="POST" action="/login">
+    <label for="cpf">CPF</label>
+    <input type="password" id="cpf" name="cpf" maxlength="14" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" required autofocus>
+    <label for="senha">Senha</label>
+    <input type="password" id="senha" name="senha" required>
+    <p><button type="submit">Entrar</button></p>
+  </form>
+</div>
+<%- include('partials/rodape') %>

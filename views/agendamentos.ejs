@@ -1,0 +1,57 @@
+<%- include('partials/topo', { titulo: 'Agendamentos' }) %>
+<h1>Agendamentos</h1>
+<% if (erro) { %><div class="erro"><%= erro %></div><% } %>
+
+<div class="card">
+  <h3 style="margin-top:0">Novo agendamento</h3>
+  <form method="POST" action="/agendamentos" class="linha-form">
+    <div>
+      <label for="crianca_id">Criança</label>
+      <select id="crianca_id" name="crianca_id" required>
+        <option value="">Selecione...</option>
+        <% criancas.forEach(c => { %>
+          <option value="<%= c.id %>"><%= c.nome %> (resp.: <%= c.responsavel_nome %>)</option>
+        <% }) %>
+      </select>
+    </div>
+    <div>
+      <label for="data_consulta">Data da consulta</label>
+      <input type="date" id="data_consulta" name="data_consulta" required>
+    </div>
+    <div>
+      <label for="motivo">Motivo</label>
+      <input type="text" id="motivo" name="motivo" maxlength="200">
+    </div>
+    <div><button type="submit">Agendar</button></div>
+  </form>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Data</th><th>Criança</th><th>Responsável</th><th>Contato</th><th>Motivo</th><th>Remarcar</th></tr>
+  </thead>
+  <tbody>
+    <% if (agendamentos.length === 0) { %>
+      <tr><td colspan="6">Nenhum agendamento cadastrado.</td></tr>
+    <% } %>
+    <% agendamentos.forEach(a => { %>
+      <tr>
+        <td><strong><%= fmtData(a.data_consulta) %></strong></td>
+        <td><%= a.crianca_nome %><br><span class="nota">Nasc.: <%= fmtData(a.data_nascimento) %></span></td>
+        <td><%= a.responsavel_nome %></td>
+        <td><%= a.responsavel_telefone || '-' %><br><span class="nota"><%= a.responsavel_email || '' %></span></td>
+        <td><%= a.motivo || '-' %></td>
+        <td class="acoes">
+          <form method="POST" action="/agendamentos/<%= a.id %>/remarcar">
+            <input type="date" name="data_consulta" value="<%= paraInputData(a.data_consulta) %>" required>
+            <button type="submit" class="btn-peq">Salvar</button>
+          </form>
+          <form method="POST" action="/agendamentos/<%= a.id %>/excluir" onsubmit="return confirm('Cancelar este agendamento?');">
+            <button type="submit" class="btn-perigo btn-peq">Cancelar</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+<%- include('partials/rodape') %>

@@ -1,0 +1,22 @@
+<%- include('partials/topo', { titulo: 'Início' }) %>
+<h1>Bem-vindo(a), <%= usuario.nome %>!</h1>
+<p>Você está autenticado(a) no sistema da Clínica Pediátrica Pequenos Passos. <a href="/logout">Encerrar sessão</a></p>
+
+<div class="grade">
+  <div class="card item">
+    <div class="num"><%= totais.responsaveis %></div>
+    <p>Responsáveis</p>
+    <a class="btn" href="/responsaveis">Acessar</a>
+  </div>
+  <div class="card item">
+    <div class="num"><%= totais.criancas %></div>
+    <p>Crianças</p>
+    <a class="btn" href="/criancas">Acessar</a>
+  </div>
+  <div class="card item">
+    <div class="num"><%= totais.agendamentos %></div>
+    <p>Consultas agendadas</p>
+    <a class="btn" href="/agendamentos">Acessar</a>
+  </div>
+</div>
+<%- include('partials/rodape') %>

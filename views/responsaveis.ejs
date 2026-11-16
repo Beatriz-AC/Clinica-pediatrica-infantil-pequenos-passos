@@ -1,0 +1,51 @@
+<%- include('partials/topo', { titulo: 'Responsáveis' }) %>
+<h1>Responsáveis</h1>
+<% if (erro) { %><div class="erro"><%= erro %></div><% } %>
+
+<form method="GET" action="/responsaveis" class="barra" id="form-busca">
+  <input type="text" name="busca" id="busca" value="<%= busca %>" placeholder="Buscar por nome ou CPF (11 dígitos)..." autocomplete="off">
+  <button type="submit">Buscar</button>
+  <% if (busca) { %><a class="btn btn-sec" href="/responsaveis">Limpar</a><% } %>
+  <a class="btn" href="/responsaveis/novo">+ Novo responsável</a>
+</form>
+
+<table>
+  <thead>
+    <tr><th>Nome</th><th>Telefone</th><th>E-mail</th><th>Ações</th></tr>
+  </thead>
+  <tbody>
+    <% if (responsaveis.length === 0) { %>
+      <tr><td colspan="4">Nenhum responsável encontrado.</td></tr>
+    <% } %>
+    <% responsaveis.forEach(r => { %>
+      <tr>
+        <td><%= r.nome %></td>
+        <td><%= r.telefone || '-' %></td>
+        <td><%= r.email || '-' %></td>
+        <td class="acoes">
+          <a class="btn btn-peq" href="/responsaveis/<%= r.id %>/editar">Editar</a>
+          <form method="POST" action="/responsaveis/<%= r.id %>/excluir" onsubmit="return confirm('Excluir este responsável?');">
+            <button type="submit" class="btn-perigo btn-peq">Excluir</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+<p class="nota">Por segurança (LGPD), o CPF é armazenado criptografado (hash bcrypt) e não é exibido.</p>
+
+<script>
+  // Busca dinâmica: filtra a listagem enquanto o usuário digita
+  const campo = document.getElementById('busca');
+  const form = document.getElementById('form-busca');
+  let temporizador;
+  campo.addEventListener('input', () => {
+    clearTimeout(temporizador);
+    temporizador = setTimeout(() => form.submit(), 400);
+  });
+  if (campo.value) {
+    campo.focus();
+    campo.setSelectionRange(campo.value.length, campo.value.length);
+  }
+</script>
+<%- include('partials/rodape') %>
